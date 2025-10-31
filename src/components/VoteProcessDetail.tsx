@@ -12,7 +12,7 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { apiService } from '../services/api.service';
 import { LoadingSpinner } from './LoadingSpinner';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface VoteProcessDetailProps {
   voteProcess: VoteProcess;

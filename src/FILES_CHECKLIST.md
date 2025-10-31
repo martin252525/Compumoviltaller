@@ -121,9 +121,9 @@ Estos archivos están (o deberían estar) en `.gitignore`:
 - [ ] ✅ `use-mobile.ts`
 - [ ] ✅ `utils.ts`
 
-### 📁 Carpeta: `/components/figma`
+### 📁 Carpeta: `/components/images`
 
-- [ ] ✅ `ImageWithFallback.tsx` - Componente protegido
+- [ ] ✅ `ImageWithFallback.tsx` - Componente protegido (recursos de imágenes)
 
 ### 📁 Carpeta: `/hooks`
 
@@ -312,7 +312,7 @@ vote-app-web/
 ├── 📁 components/ (12 archivos + 40 UI)
 │   ├── *.tsx                ✅ Todos los componentes
 │   ├── ui/                  ✅ ShadCN components
-│   └── figma/               ✅ ImageWithFallback
+│   └── image-assets/        ✅ ImageWithFallback (recursos de imagenes)
 │
 ├── 📁 hooks/ (4 archivos)
 │   └── *.ts                 ✅ Custom hooks

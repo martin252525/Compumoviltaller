@@ -30,7 +30,7 @@ export function useUserVotes() {
 
   const loadMore = useCallback(() => {
     if (data && !data.last) {
-      setPage(prev => prev + 1);
+  setPage((prev: number) => prev + 1);
     }
   }, [data]);
 

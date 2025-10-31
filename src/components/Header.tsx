@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { Vote, User as UserIcon, History, LogOut, Database } from 'lucide-react';
+import { Vote, User as UserIcon, LogOut, Database } from 'lucide-react';
 import { isUsingMockApi } from '../services/api.service';
 
 interface HeaderProps {

@@ -136,7 +136,7 @@ const mockVoteProcesses: VoteProcess[] = [
       {
         id: '12',
         voteProcessId: '4',
-        optionText: 'Grupo de Inteligencia Artificial',
+        optionText: 'Grupo A',
         votes: 0,
         createdAt: '2025-10-20T00:00:00Z',
       },

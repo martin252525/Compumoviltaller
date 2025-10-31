@@ -32,12 +32,16 @@ export interface VoteResponse {
   voteProcessId: string;
   optionId: string;
   votedAt: string;
+  confirmed?: boolean;
 }
 
 export interface UserVote {
   id: string;
-  voteProcess: VoteProcess;
-  selectedOption: VoteOption;
+  userId: string;
+  voteProcessId: string;
+  voteProcessTitle?: string;
+  optionId: string;
+  optionText?: string;
   votedAt: string;
 }
 

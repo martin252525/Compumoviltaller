@@ -50,14 +50,14 @@ export function VotingHistory() {
         <Card key={userVote.id}>
           <CardHeader>
             <div className="flex items-start justify-between gap-2">
-              <CardTitle className="line-clamp-1">{userVote.voteProcess.title}</CardTitle>
+              <CardTitle className="line-clamp-1">{userVote.voteProcessTitle}</CardTitle>
               <Badge variant="outline" className="flex items-center gap-1 shrink-0">
                 <CheckCircle className="h-3 w-3" />
                 Votado
               </Badge>
             </div>
             <CardDescription className="line-clamp-2">
-              {userVote.voteProcess.description}
+              {userVote.voteProcessTitle}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -67,7 +67,7 @@ export function VotingHistory() {
             </div>
             <div className="p-3 bg-muted rounded-lg">
               <p className="text-sm text-muted-foreground mb-1">Tu voto:</p>
-              <p>{userVote.selectedOption.optionText}</p>
+              <p>{userVote.optionText}</p>
             </div>
           </CardContent>
         </Card>

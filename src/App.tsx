@@ -18,7 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Button } from './components/ui/button';
 import { Toaster } from './components/ui/sonner';
 import { ArrowLeft, Vote, Inbox } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 type View = 'home' | 'profile';
 
