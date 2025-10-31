@@ -1,7 +1,7 @@
 
   # Mobile Voting App
 
-  Especificación del proyecto (21 de octubre de 2025)
+  Especificación del proyecto 
 
   Descripción
 
@@ -10,7 +10,7 @@
   Requisitos funcionales principales
 
   - Autenticación segura con Firebase Authentication (soportar al menos inicio de sesión con Google). Persistencia de sesión y opción de cierre de sesión.
-  - Consumo de la API disponible en https://api.sebastian.cl/vote; respetar el contrato OpenAPI publicado en https://api.sebastian.cl/vote/swagger-ui/index.html.
+  - Consumo de la API disponible en https://api.sebastian.cl/vote; OpenAPI publicado en https://api.sebastian.cl/vote/swagger-ui/index.html.
   - Listado dinámico de procesos de votación con paginación o desplazamiento infinito, búsquedas y filtros en la lista.
   - Vistas de detalle de cada proceso (título, descripción, fechas, estado, opciones). Las vistas públicas deben poder consultarse sin autenticación; los endpoints con datos sensibles y la acción de votar requieren autenticación.
   - Flujo de votación seguro: validaciones de cliente y servidor, y manejo claro de errores de negocio (4xx) y servidor (5xx).
@@ -32,11 +32,7 @@
   - No incluir credenciales en el código. Gestionar variables de entorno correctamente y proporcionar un `.env.example`.
   - Protección de datos privados del usuario y tratamiento seguro de tokens.
 
-  Entregables
-
-  - Repositorio con código fuente y documentación.
-  - `README.md` con instrucciones de instalación y uso.
-  - Resumen de endpoints utilizados (parámetros y modelos de entrada/salida) y un breve informe técnico que describa la arquitectura, mapeo de modelos, manejo de errores y medidas de seguridad.
+  
 
   Cómo ejecutar el proyecto (desarrollo)
 
@@ -53,7 +49,7 @@
   npm run dev
   ```
 
-  El servidor suele quedar disponible en http://localhost:5173
+  El servidor squeda disponible en http://localhost:5173
 
   Notas finales
 
