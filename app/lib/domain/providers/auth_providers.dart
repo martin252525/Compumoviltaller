@@ -5,39 +5,67 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../consts/app_const.dart';
+import '../../main.dart';
 
 final _logger = Logger();
 
 /// Provider del servicio de autenticación
-final authServiceProvider = Provider((ref) => AuthService());
+final authServiceProvider = Provider((ref) {
+  final firebaseAvailable = ref.watch(firebaseAvailableProvider);
+  return AuthService(firebaseAvailable: firebaseAvailable);
+});
 
 /// Provider del estado del usuario actual
 final currentUserProvider = StreamProvider<User?>((ref) {
+  final firebaseAvailable = ref.watch(firebaseAvailableProvider);
+  if (!firebaseAvailable) {
+    // Si Firebase no está disponible, retornar stream vacío (sin usuario)
+    return Stream.value(null);
+  }
   return FirebaseAuth.instance.authStateChanges();
 });
 
 /// Servicio de autenticación con Firebase
 class AuthService {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['email', 'profile'],
-  );
+  final bool firebaseAvailable;
+  late final FirebaseAuth? _firebaseAuth;
+  late final GoogleSignIn? _googleSignIn;
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
+  AuthService({required this.firebaseAvailable}) {
+    if (firebaseAvailable) {
+      _firebaseAuth = FirebaseAuth.instance;
+      _googleSignIn = GoogleSignIn(
+        scopes: ['email', 'profile'],
+      );
+    } else {
+      _firebaseAuth = null;
+      _googleSignIn = null;
+    }
+  }
+
   /// Usuario actual
-  User? get currentUser => _firebaseAuth.currentUser;
+  User? get currentUser => _firebaseAuth?.currentUser;
 
   /// Stream de cambios de autenticación
-  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
+  Stream<User?> get authStateChanges =>
+      _firebaseAuth?.authStateChanges() ?? Stream.value(null);
 
   /// Verificar si hay un token válido
   Future<bool> hasValidToken() async {
+    if (!firebaseAvailable) return false;
+    
     final token = await _storage.read(key: AppConst.idTokenLabel);
     return token != null && token.isNotEmpty && currentUser != null;
   }
 
   /// Obtener el token de ID del usuario actual
   Future<String?> getIdToken() async {
+    if (!firebaseAvailable) {
+      _logger.w("Firebase no disponible, no se puede obtener token");
+      return null;
+    }
+    
     try {
       final user = currentUser;
       if (user != null) {
@@ -56,9 +84,15 @@ class AuthService {
 
   /// Iniciar sesión con Google
   Future<UserCredential?> signInWithGoogle() async {
+    if (!firebaseAvailable) {
+      _logger.e("Firebase no está disponible. No se puede iniciar sesión.");
+      throw Exception(
+          "Firebase no está configurado. Por favor configura google-services.json");
+    }
+
     try {
       // Trigger the authentication flow
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser = await _googleSignIn!.signIn();
 
       if (googleUser == null) {
         // El usuario canceló el inicio de sesión
@@ -77,7 +111,7 @@ class AuthService {
 
       // Sign in to Firebase with the Google credential
       final userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
+          await _firebaseAuth!.signInWithCredential(credential);
 
       // Guardar información del usuario
       if (userCredential.user != null) {
@@ -106,9 +140,14 @@ class AuthService {
 
   /// Cerrar sesión
   Future<void> signOut() async {
+    if (!firebaseAvailable) {
+      _logger.w("Firebase no disponible, no se puede cerrar sesión");
+      return;
+    }
+    
     try {
-      await _firebaseAuth.signOut();
-      await _googleSignIn.signOut();
+      await _firebaseAuth!.signOut();
+      await _googleSignIn!.signOut();
 
       // Limpiar datos guardados
       final prefs = await SharedPreferences.getInstance();
@@ -192,4 +231,3 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     }
   }
 }
-

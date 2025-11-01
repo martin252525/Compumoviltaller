@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/providers/auth_providers.dart';
-import 'login_screen.dart';
+import '../../main.dart';
+import '../../screens/login_screen.dart';
 import 'votes_list_screen.dart';
 
 /// Pantalla de inicio que verifica el estado de autenticación
@@ -24,6 +25,20 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     await Future.delayed(const Duration(seconds: 2));
 
     if (!mounted) return;
+
+    // Verificar si Firebase está disponible
+    final firebaseAvailable = ref.read(firebaseAvailableProvider);
+    
+    if (!firebaseAvailable) {
+      // Si Firebase no está disponible, ir directamente a la lista
+      // El usuario puede explorar sin autenticación
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const VotesListScreen(),
+        ),
+      );
+      return;
+    }
 
     // Verificar si hay sesión guardada
     final authService = ref.read(authServiceProvider);

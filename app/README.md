@@ -1,25 +1,39 @@
 # Sistema de Votación - Aplicación Móvil Flutter
 
+## ⚡ Inicio Rápido
+
+```bash
+cd app
+flutter pub get
+flutter run
+```
+
+**Nota:** La app funciona sin configurar Firebase. Podrás explorar votaciones, buscar y ver detalles. Para habilitar autenticación y votar, consulta la [sección de Firebase](#configuración-de-firebase-opcional).
+
 ## Descripción
 
 Aplicación móvil desarrollada en Flutter para Android que permite a los usuarios autenticarse mediante Firebase Authentication con Google y participar en votaciones a través de la API REST disponible en `https://api.sebastian.cl/vote`.
 
+## 🎯 Ejecutar en Emulador
+
+¿Problemas para conectar tu dispositivo físico? Consulta la [**Guía Completa del Emulador**](GUIA_EMULADOR_COMPLETA.md) para instrucciones paso a paso.
+
 ## Características Principales
 
-### Autenticación
+### Autenticación (Opcional - Requiere Firebase)
 - ✅ Inicio de sesión con Google mediante Firebase Authentication
 - ✅ Persistencia de sesión
 - ✅ Cierre de sesión seguro
 - ✅ Pantalla de perfil de usuario
 
-### Votaciones
+### Votaciones (Funciona sin Firebase)
 - ✅ Listado de votaciones con paginación infinita (infinite scroll)
 - ✅ Búsqueda de votaciones por título/descripción
 - ✅ Filtros por estado (Activa, Finalizada, Próxima)
 - ✅ Vista detallada de cada votación
 - ✅ Visualización de resultados en tiempo real
-- ✅ Proceso de votación seguro (requiere autenticación)
-- ✅ Historial de votaciones del usuario
+- ⚠️ Proceso de votación seguro (requiere autenticación)
+- ⚠️ Historial de votaciones del usuario (requiere autenticación)
 
 ### Arquitectura
 - ✅ Arquitectura por capas (Presentación, Dominio, Datos)
@@ -98,27 +112,10 @@ lib/
 - Flutter SDK 3.9.2 o superior
 - Dart SDK 3.9.2 o superior
 - Android Studio / VS Code
-- Cuenta de Google Cloud Platform (para Firebase)
+- Emulador Android o dispositivo físico
+- (Opcional) Cuenta de Google Cloud Platform para Firebase
 
-### Configuración de Firebase
-
-1. Crear un proyecto en [Firebase Console](https://console.firebase.google.com/)
-
-2. Habilitar Firebase Authentication:
-   - Ir a Authentication > Sign-in method
-   - Habilitar "Google" como proveedor
-
-3. Agregar las siguientes SHA-1 y SHA-256 al proyecto:
-   ```
-   SHA-1: 6C:93:6F:47:18:74:7C:16:F5:1B:9F:62:E5:7A:D0:96:01:8C:EE:19
-   SHA-256: D4:FC:F5:44:4E:56:AD:1E:05:5D:19:87:5D:78:4B:3D:28:BF:5A:B7
-   ```
-
-4. Descargar `google-services.json` y colocarlo en `android/app/`
-
-5. Configurar el archivo `android/build.gradle` para incluir los servicios de Google
-
-### Instalación
+### Instalación Rápida
 
 1. Clonar el repositorio:
    ```bash
@@ -129,6 +126,49 @@ lib/
 2. Instalar dependencias:
    ```bash
    flutter pub get
+   ```
+
+3. **Ejecutar en emulador o dispositivo:**
+   ```bash
+   flutter run
+   ```
+
+**¡Listo!** La app funcionará inmediatamente en modo exploración (sin autenticación).
+
+### Configuración de Firebase (Opcional)
+
+⚠️ **Solo necesario si quieres habilitar:**
+- Inicio de sesión con Google
+- Realizar votos
+- Ver historial personal de votos
+
+Si solo quieres probar la app y ver las votaciones, **puedes omitir esta sección**.
+
+#### Pasos para configurar Firebase:
+
+1. Crear un proyecto en [Firebase Console](https://console.firebase.google.com/)
+
+2. Habilitar Firebase Authentication:
+   - Ir a Authentication > Sign-in method
+   - Habilitar "Google" como proveedor
+
+3. Agregar app Android al proyecto:
+   - Package name: `cm.utem.app`
+   - Descargar `google-services.json`
+   - Colocar en `android/app/google-services.json`
+
+4. (Opcional) Agregar SHA-1 y SHA-256 para producción:
+   ```bash
+   # Generar tus propias claves de debug:
+   cd android
+   keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+   ```
+
+5. Recompilar la app:
+   ```bash
+   flutter clean
+   flutter pub get
+   flutter run
    ```
 
 3. Generar código (modelos, estados):

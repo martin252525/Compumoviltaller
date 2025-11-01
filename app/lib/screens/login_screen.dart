@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/providers/auth_providers.dart';
+import '../../main.dart';
 import '../../presentation/screens/votes_list_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -14,6 +15,26 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _isLoading = false;
 
   Future<void> _handleGoogleSignIn() async {
+    // Verificar si Firebase está disponible
+    final firebaseAvailable = ref.read(firebaseAvailableProvider);
+    
+    if (!firebaseAvailable) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Firebase no está configurado. Para habilitar autenticación:\n'
+            '1. Crea un proyecto en Firebase Console\n'
+            '2. Descarga google-services.json\n'
+            '3. Colócalo en android/app/',
+          ),
+          backgroundColor: Colors.orange,
+          duration: Duration(seconds: 5),
+        ),
+      );
+      return;
+    }
+
     setState(() {
       _isLoading = true;
     });
@@ -56,6 +77,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final firebaseAvailable = ref.watch(firebaseAvailableProvider);
+    
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -110,6 +133,32 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 48),
+
+                  // Advertencia si Firebase no está disponible
+                  if (!firebaseAvailable)
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      margin: const EdgeInsets.only(bottom: 24),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.withOpacity(0.9),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.warning, color: Colors.white),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Autenticación no disponible.\nFalta configuración de Firebase.',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
 
                   // Botón de Google Sign In
                   ElevatedButton.icon(
