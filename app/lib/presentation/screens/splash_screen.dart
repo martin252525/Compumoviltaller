@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/providers/auth_providers.dart';
-import 'login_screen.dart';
+import '../../screens/login_screen.dart';
 import 'votes_list_screen.dart';
 
 /// Pantalla de inicio que verifica el estado de autenticación
