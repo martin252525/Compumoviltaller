@@ -1,4 +1,4 @@
-# app
+flutter run --release# app
 
 A new Flutter project.
 
